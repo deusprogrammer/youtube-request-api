@@ -63,7 +63,6 @@ app.use((req, res, next) => {
 const jwtAuth = async (req, res, next) => {
     if (req.headers['authorization']) {
         let [ type, auth ] = req.headers['authorization'].split(' ');
-        console.log("MOTHERFUCKER: " + auth);
         if (type == 'Bearer') {
             jwt.verify(
                 auth,
