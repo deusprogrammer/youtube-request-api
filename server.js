@@ -21,6 +21,9 @@ var client = jwksClient({
   
 function getKey(header, callback){
     client.getSigningKey(header.kid, function(err, key) {
+        if (err) {
+            console.error("FUCK: " + err);
+        }
         var signingKey = key.publicKey || key.rsaPublicKey;
         callback(null, signingKey);
     });
