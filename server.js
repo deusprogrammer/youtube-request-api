@@ -12,8 +12,6 @@ import requests from './api/routes/requests';
 import Users from './api/models/users';
 import {refreshAccessToken} from './api/utils/GoogleHelper';
 
-import {jwtAuthStrategy} from './api/config/passportConfig';
-
 const jwt = require('jsonwebtoken');
 var jwksClient = require('jwks-rsa');
 
@@ -31,12 +29,9 @@ function getKey(header, callback){
 let app = express();
 let port = process.env.PORT || 8080;
 
-passport.use(jwtAuthStrategy);
-
 app.use(cors());
 app.options('*', cors());
 app.use(express.json({}));
-app.use(passport.initialize());
 
 // Mongoose instance connection url connection
 const databaseUrl = process.env.YT_DB_URL;
