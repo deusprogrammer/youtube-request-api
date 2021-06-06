@@ -16,7 +16,11 @@ let createTwitchAccessToken = async () => {
 
 let accessToken = null;
 (async () => {
-    accessToken = await createTwitchAccessToken();
+    try {
+        accessToken = await createTwitchAccessToken();
+    } catch (error) {
+        console.error("Failed to get access token: " + error.stack);
+    }
 })();
 
 router.route("/")
