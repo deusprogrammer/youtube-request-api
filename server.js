@@ -1,7 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import passport from 'passport';
 
 import games from './api/routes/games';
 import channels from './api/routes/channels';
@@ -79,22 +78,18 @@ const jwtAuth = async (req, res, next) => {
                                     ignoreExpiration: true
                                 }, async (err, decoded) => {
                                     if (err) {
-                                        res.status('401').json({error: true, message: 'Invalid jwt token'});
-                                        return;
+                                        return res.status('401').json({error: true, message: 'Invalid jwt token'});
                                     }
 
                                     let user = await Users.findOne({ytUserId: decoded.sub});
                                     let {id_token} = await refreshAccessToken(user.refreshToken);
 
-                                    res.status('401').json({error: false, message: "JWT expired.  Please use refreshed token.", newJwt: id_token})
-                                    return;
+                                    return res.status('401').json({error: false, message: "JWT expired.  Please use refreshed token.", newJwt: id_token});
                                 });
-                            return;
                         }
 
-                        console.log('JWT Error', err);
-                        res.status('401').json({error: true, message: 'Invalid authorization'});
-                        return;
+                        console.error('JWT Error', err);
+                        return res.status('401').json({error: true, message: 'Invalid authorization'});
                     }
 
                     req.user = decoded;
@@ -105,9 +100,9 @@ const jwtAuth = async (req, res, next) => {
             return;
         }
 
-        res.status('401').json({error: true, message: 'Invalid authorization header'});
+        return res.status('401').json({error: true, message: 'Invalid authorization header'});
     } else {
-        res.status('401').json({error: true, message: 'Missing authorization header'});
+        return res.status('401').json({error: true, message: 'Missing authorization header'});
     }
 };
 

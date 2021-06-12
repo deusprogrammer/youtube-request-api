@@ -9,6 +9,8 @@ const CLIENT_SECRET = process.env.YT_CLIENT_SECRET;
 const REDIRECT_URI = process.env.YT_REDIRECT_URI;
 
 export const getAccessToken = async (code) => {
+    console.log("URI: " + REDIRECT_URI);
+
     let params = new URLSearchParams();
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
